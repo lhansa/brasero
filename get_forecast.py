@@ -37,5 +37,5 @@ def get_forecast(codigo_municipio, api_key):
 
 # Ejemplo de uso
 codigo_municipio = "28079"  # Código de Madrid, por ejemplo
-api_key = "TU_API_KEY_AEMET"
+api_key = '$AEMET_KEY'
 print(get_forecast(codigo_municipio, api_key))
