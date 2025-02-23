@@ -2,7 +2,8 @@ import requests
 import datetime
 import os
 
-def get_forecast(codigo_municipio, api_key):
+
+def get_forecast(codigo_municipio, forecast_date, api_key):
     # Calcular la fecha de mañana en formato YYYY-MM-DD
     manana = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
     
@@ -13,21 +14,27 @@ def get_forecast(codigo_municipio, api_key):
       "api_key": api_key
     }
     
-    # Obtener la URL con los datos
-    respuesta = requests.get(url_prediccion, headers=headers)
-    datos_url = respuesta.json()
-
-    return(datos_url)
+    respuesta = requests.get(url_prediccion, headers=headers).json()
     
-   
+    datos_url = respuesta['datos']
 
-# Ejemplo de uso
-codigo_municipio = "28079"  # Código de Madrid, por ejemplo
-api_key = os.getenv('AEMET_KEY')
+    datos_prediccion = requests.get(datos_url).json()
+    
+    manana_str = forecast_date.isoformat()
+        
+    # Extraer los datos de mañana
+    for prediccion in datos_prediccion:
+        for dia in prediccion.get("prediccion", {}).get("dia", []):
+            fecha_dia = dia.get("fecha", "")[:10] 
+            if fecha_dia == manana_str:
+                temperatura_min = dia.get("temperatura", {}).get("minima")
+                temperatura_max = dia.get("temperatura", {}).get("maxima")
+                estado_cielo = dia.get("estadoCielo", [{}])[0].get("descripcion", "No disponible")
+    
+    
+                # Formatear la fecha en estilo "24 de febrero"
+                fecha_formateada = forecast_date.strftime("%-d")
+                
+                mensaje = f"Mañana día {fecha_formateada} la temperatura mínima será {temperatura_min}°C, la máxima {temperatura_max}°C. \n Estado del cielo: {estado_cielo}."
 
-resultado1 = get_forecast(codigo_municipio, api_key)
-
-print(resultado1)
-
-
-
+                return(mensaje)
