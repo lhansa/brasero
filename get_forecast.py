@@ -1,7 +1,7 @@
 import requests
 import datetime
 
-def obtener_prediccion_tiempo(codigo_municipio, api_key):
+def get_forecast(codigo_municipio, api_key):
     # Calcular la fecha de mañana en formato YYYY-MM-DD
     manana = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
     
@@ -38,4 +38,4 @@ def obtener_prediccion_tiempo(codigo_municipio, api_key):
 # Ejemplo de uso
 codigo_municipio = "28079"  # Código de Madrid, por ejemplo
 api_key = "TU_API_KEY_AEMET"
-print(obtener_prediccion_tiempo(codigo_municipio, api_key))
+print(get_forecast(codigo_municipio, api_key))
