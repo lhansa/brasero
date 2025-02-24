@@ -7,10 +7,7 @@ import requests
 # from utils.send_telegram import send_telegram
 
 def get_forecast(codigo_municipio, forecast_date, api_key):
-    # Calcular la fecha de mañana en formato YYYY-MM-DD
-    manana = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
     
-    # URL de la API de AEMET para predicción diaria
     url_prediccion = f"https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/{codigo_municipio}"
     headers = {
       "accept": "application/json",
@@ -19,10 +16,9 @@ def get_forecast(codigo_municipio, forecast_date, api_key):
     
     respuesta = requests.get(url_prediccion, headers=headers).json()
     if (respuesta['estado'] != 200):
-        raise ConnectionError('AEMET call did not work')
+        raise ConnectionError('AEMET call did not work for code ' + codigo_municipio)
     
     datos_url = respuesta['datos']
-    print('URL with data: ' + datos_url)
 
     datos_prediccion = requests.get(datos_url).json()
     
@@ -39,11 +35,19 @@ def get_forecast(codigo_municipio, forecast_date, api_key):
     
     
                 # Formatear la fecha en estilo "24 de febrero"
-                fecha_formateada = forecast_date.strftime("%-d")
+                fecha_formateada = forecast_date.strftime("%-d/%m")
+
+                mensaje = f"Mañana {fecha_formateada}:  🌡️ mín: {temperatura_min}°C, máx {temperatura_max}°C. \nEstado del cielo: {estado_cielo}."
+
+    return(mensaje)
                 
-                mensaje = f"🌤🌤 **Previsión del tiempo** 🌤🌤\n\nMañana día {fecha_formateada} la temperatura mínima será {temperatura_min}°C, la máxima {temperatura_max}°C. \n\nEstado del cielo: {estado_cielo}."
-                print('Mensaje creado:\n' + mensaje)
-                return(mensaje)
+def create_message(dict_msg):
+                
+    mensaje_final = "🌤🌤 **Previsión del tiempo** 🌤🌤\n\n"
+    mensaje_final = mensaje_final + "\n\n".join(f"**{key}**\n{message}" for key, message in dict_msg.items())
+    
+    print('Mensaje final creado')
+    return(mensaje_final)
             
 
 def send_telegram(MENSAJE):
@@ -70,13 +74,20 @@ def send_telegram(MENSAJE):
             "body": json.dumps({"error": str(e)})
         }
 
-codigo_municipio = "28079"  # Código de Madrid, por ejemplo
 api_key = os.getenv('AEMET_KEY')
 manana_date = datetime.date.today() + datetime.timedelta(days=1)
 
+msg_madrid = get_forecast('28079', manana_date, api_key)
+msg_colmenar = get_forecast('28045', manana_date, api_key)
 
-message_with_forecast = get_forecast(codigo_municipio, manana_date, api_key)
-send_telegram(message_with_forecast)
+dict_with_messages = {
+    '🏢 Madrid' : msg_madrid, 
+    '🏡 Colmenar': msg_colmenar
+}
+
+message_with_forecasts = create_message(dict_with_messages)
+
+send_telegram(message_with_forecasts)
 
 # if __name__ == "__main__":
     
