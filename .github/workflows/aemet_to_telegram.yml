@@ -2,7 +2,7 @@ name: Enviar predicción del tiempo a Telegram
 
 on:
   schedule:
-    - cron: '0 13 * * *'  # Ejecuta todos los días a las 07:00 UTC (ajusta según tu zona horaria)
+    - cron: '0 18 * * *'  # Ejecuta todos los días a las 07:00 UTC (ajusta según tu zona horaria)
   workflow_dispatch:  
 
 jobs:
