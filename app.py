@@ -41,7 +41,7 @@ def get_forecast(codigo_municipio, forecast_date, api_key):
                 # Formatear la fecha en estilo "24 de febrero"
                 fecha_formateada = forecast_date.strftime("%-d")
                 
-                mensaje = f"Mañana día {fecha_formateada} la temperatura mínima será {temperatura_min}°C, la máxima {temperatura_max}°C. \n Estado del cielo: {estado_cielo}."
+                mensaje = f"Mañana día {fecha_formateada} la temperatura mínima será {temperatura_min}°C, la máxima {temperatura_max}°C. \nEstado del cielo: {estado_cielo}."
                 print('Mensaje creado:\n' + mensaje)
                 return(mensaje)
             
