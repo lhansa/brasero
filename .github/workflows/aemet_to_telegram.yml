@@ -1,0 +1,29 @@
+name: Enviar predicción del tiempo a Telegram
+
+on:
+  schedule:
+    - cron: '0 13 * * *'  # Ejecuta todos los días a las 07:00 UTC (ajusta según tu zona horaria)
+  workflow_dispatch:  
+
+jobs:
+  send_weather_forecast:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Instalar dependencias
+        run: pip install requests
+
+      - name: Ejecutar script
+        env:
+          API_KEY_AEMET: ${{ secrets.API_KEY_AEMET }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python script.py
