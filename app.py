@@ -32,18 +32,18 @@ def get_forecast(codigo_municipio, forecast_date, api_key):
                 temperatura_min = dia.get("temperatura", {}).get("minima")
                 temperatura_max = dia.get("temperatura", {}).get("maxima")
                 estado_cielo = dia.get("estadoCielo", [{}])[0].get("descripcion", "No disponible")
-    
-    
-                # Formatear la fecha en estilo "24 de febrero"
-                fecha_formateada = forecast_date.strftime("%-d/%m")
 
-                mensaje = f"Mañana {fecha_formateada}:  🌡️ mín: {temperatura_min}°C, máx {temperatura_max}°C. \nEstado del cielo: {estado_cielo}."
+                mensaje = f"🌡️ mín: {temperatura_min}°C, máx {temperatura_max}°C. \n📯 {estado_cielo}."
 
     return(mensaje)
                 
-def create_message(dict_msg):
+def create_message(dict_msg, forecast_date):
                 
     mensaje_final = "🌤🌤 **Previsión del tiempo** 🌤🌤\n\n"
+    
+    fecha_formateada = forecast_date.strftime("%-d/%m")
+
+    mensaje_final = mensaje_final + f"📅 {fecha_formateada}\n\n"
     mensaje_final = mensaje_final + "\n\n".join(f"**{key}**\n{message}" for key, message in dict_msg.items())
     
     print('Mensaje final creado')
@@ -85,7 +85,7 @@ dict_with_messages = {
     '🏡 Colmenar': msg_colmenar
 }
 
-message_with_forecasts = create_message(dict_with_messages)
+message_with_forecasts = create_message(dict_with_messages, manana_date)
 
 send_telegram(message_with_forecasts)
 
