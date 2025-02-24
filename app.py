@@ -41,7 +41,7 @@ def get_forecast(codigo_municipio, forecast_date, api_key):
                 # Formatear la fecha en estilo "24 de febrero"
                 fecha_formateada = forecast_date.strftime("%-d")
                 
-                mensaje = f"🌤**Previsión del tiempo**\nMañana día {fecha_formateada} la temperatura mínima será {temperatura_min}°C, la máxima {temperatura_max}°C. \nEstado del cielo: {estado_cielo}."
+                mensaje = f"🌤🌤 **Previsión del tiempo** 🌤🌤\n\nMañana día {fecha_formateada} la temperatura mínima será {temperatura_min}°C, la máxima {temperatura_max}°C. \n\nEstado del cielo: {estado_cielo}."
                 print('Mensaje creado:\n' + mensaje)
                 return(mensaje)
             
@@ -54,7 +54,8 @@ def send_telegram(MENSAJE):
     full_url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     params = {
         "chat_id": CHAT_ID,
-        "text": MENSAJE
+        "text": MENSAJE, 
+        "parse_mode": "Markdown"
     }
 
     try:
