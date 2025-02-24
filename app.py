@@ -33,7 +33,7 @@ def get_forecast(codigo_municipio, forecast_date, api_key):
                 temperatura_max = dia.get("temperatura", {}).get("maxima")
                 estado_cielo = dia.get("estadoCielo", [{}])[0].get("descripcion", "No disponible")
 
-                mensaje = f"🌡️ mín: {temperatura_min}°C, máx {temperatura_max}°C. \n📯 {estado_cielo}."
+                mensaje = f"Temperatura: mín {temperatura_min}°C, máx {temperatura_max}°C. \nCielo: {estado_cielo}."
 
     return(mensaje)
                 
