@@ -1,8 +1,3 @@
-import requests
-import datetime
-import os
-
-
 def get_forecast(codigo_municipio, forecast_date, api_key):
     # Calcular la fecha de mañana en formato YYYY-MM-DD
     manana = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
@@ -15,8 +10,11 @@ def get_forecast(codigo_municipio, forecast_date, api_key):
     }
     
     respuesta = requests.get(url_prediccion, headers=headers).json()
+    if (respuesta['estado'] != 200):
+        raise ConnectionError('AEMET call did not work')
     
     datos_url = respuesta['datos']
+    print('URL with data: ' + datos_url)
 
     datos_prediccion = requests.get(datos_url).json()
     
@@ -36,5 +34,6 @@ def get_forecast(codigo_municipio, forecast_date, api_key):
                 fecha_formateada = forecast_date.strftime("%-d")
                 
                 mensaje = f"Mañana día {fecha_formateada} la temperatura mínima será {temperatura_min}°C, la máxima {temperatura_max}°C. \n Estado del cielo: {estado_cielo}."
-
+                print('Mensaje creado:\n' + mensaje)
                 return(mensaje)
+            

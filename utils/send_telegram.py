@@ -1,11 +1,7 @@
-import os
-import json
-import requests
-
 def send_telegram(MENSAJE):
 
-    TOKEN = os.environ['$TELEGRAM_TOKEN']
-    CHAT_ID = os.environ['$TELEGRAM_CHAT_ID']
+    TOKEN = os.getenv('TELEGRAM_TOKEN')
+    CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 
     full_url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     params = {
