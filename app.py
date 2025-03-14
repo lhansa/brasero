@@ -53,7 +53,7 @@ def create_message(dict_msg, forecast_date):
 def send_telegram(MENSAJE):
 
     TOKEN = os.getenv('TELEGRAM_TOKEN')
-    CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
+    CHAT_ID = os.getenv('TELEGRAM_CHAT_ID2')
 
     full_url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     params = {
