@@ -74,7 +74,7 @@ def send_telegram(MENSAJE):
             "statusCode": 500,
             "body": json.dumps({"error": str(e)})
         }
-
+print(os.getenv('TELEGRAM_CHAT_ID2'))
 api_key = os.getenv('AEMET_KEY')
 manana_date = datetime.date.today() + datetime.timedelta(days=1)
 
