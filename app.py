@@ -80,10 +80,12 @@ manana_date = datetime.date.today() + datetime.timedelta(days=1)
 
 msg_madrid = get_forecast('28079', manana_date, api_key)
 msg_colmenar = get_forecast('28045', manana_date, api_key)
+msg_alcobendas = get_forecast('28006', manana_date, api_key)
 
 dict_with_messages = {
-    '🏢 Madrid' : msg_madrid, 
-    '🏡 Colmenar': msg_colmenar
+    '🏡 Colmenar': msg_colmenar,
+    '🏘️ Alcobendas': msg_alcobendas,
+    '🏢 Madrid' : msg_madrid
 }
 
 message_with_forecasts = create_message(dict_with_messages, manana_date)
